@@ -1,23 +1,34 @@
-## DatagridHelperBundle - Remove Columns
+Removing Columns
+=====================
 
-1. Create an event listener for a Datagrid. 
+- Create an event listener for a Datagrid. 
 
-2. Add the datagrid helper as an argument to this event listener in the services.yml
+- Add the datagrid helper as an argument to this event listener in the services.yml
 
-```bash
+```yaml
+parameters:        
+    tfone_contact.datagrid_contact_listener.class:              Tfone\Bundle\ContactBundle\EventListener\Datagrid\ContactListener
+  
+        
+services:    
+    # event listener    
+    tfone_contact.datagrid_contact_listener:
+        class: %tfone_contact.datagrid_contact_listener.class%
         arguments: 
             - @tfone_datagrid.datagrid_helper
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.contacts-grid, method: buildBefore }
 ```
 
-3. Add the class to your event listener class by adding
+- Add the class to your event listener class by adding
 
-```bash
+```
     use Tfone\Bundle\DatagridHelperBundle\Datagrid\Helper;
 ```
 
-4. Add a protected field & construct method to you event listener
+- Add a protected field & construct method to you event listener
 
-```bash
+```
     /** @var Helper $datagridHelper */
     protected $datagridHelper;
 
@@ -26,14 +37,14 @@
     }
 ```
 
-5. In order to remove a column you need to know what this columns is called in the datagrid.yml
+- In order to remove a column you need to know what this columns is called in the datagrid.yml
 I've used the contacts grid as an example, the datagrid.yml can be found in:
 /orocrm/vendor/oro/crm/src/OroCRM/Bundle/ContactBundle/Resources/config/datagrid.yml
 
 In this example I've used the 'updatedAt' column. Just pass the GridConfiguration as the first parameter and the 
 fieldname of the column as the second parameter.
 
-```bash
+```
     public function buildBefore(BuildBefore $event) {
 
         $gridConfig = $event->getConfig();
@@ -41,9 +52,9 @@ fieldname of the column as the second parameter.
     }
 ```
 
-5.1 In order to remove multiple columns you can use
+- In order to remove multiple columns you can use
 
-```bash
+```
     public function buildBefore(BuildBefore $event) {
 
         $gridConfig = $event->getConfig();
