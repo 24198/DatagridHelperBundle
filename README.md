@@ -37,7 +37,7 @@ The helper will enable you to remove multiple filters, sorters, columns  and ena
 Examples
 ------------
 
-- [Removing columns](https://github.com/24198/DatagridHelperBundle/blob/master/Resources/config/docs/columns.md)
-- [Removing filters](https://github.com/24198/DatagridHelperBundle/blob/master/Resources/config/docs/filters.md)
-- [Removing sorters](https://github.com/24198/DatagridHelperBundle/blob/master/Resources/config/docs/sorters.md)
-- [Enabling/disabling filters](https://github.com/24198/DatagridHelperBundle/blob/master/Resources/config/docs/filter-enabling.md)
+- [Removing columns](https://github.com/24198/DatagridHelperBundle/blob/master/Resources/docs/columns.md)
+- [Removing filters](https://github.com/24198/DatagridHelperBundle/blob/master/Resources/docs/filters.md)
+- [Removing sorters](https://github.com/24198/DatagridHelperBundle/blob/master/Resources/docs/sorters.md)
+- [Enabling/disabling filters](https://github.com/24198/DatagridHelperBundle/blob/master/Resources/docs/filter-enabling.md)
