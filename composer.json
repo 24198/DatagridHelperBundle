@@ -1,0 +1,23 @@
+{
+    "name": "tfone/datagrid-helper",
+    "description": "Datagrid helper for OroCRM/Oro Platform",
+    "homepage": "https://github.com/24198/DatagridHelperBundle.git",
+    "license": "OSL-3.0",
+    "authors": [
+        {
+            "name": "24198",
+            "homepage": "https://github.com/24198/"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "Tfone\\Bundle\\DatagridHelperBundle": "src/"
+        }
+    },
+    "target-dir": "src/Tfone/Bundle/DatagridHelperBundle",
+    "require": {
+        "php": ">=5.4.4",
+        "oro/platform": "1.*"
+    },
+    "minimum-stability": "stable"
+}

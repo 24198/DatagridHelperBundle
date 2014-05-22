@@ -1,0 +1,9 @@
+parameters:        
+    tfone_datagrid.datagrid_helper.class:              Tfone\Bundle\DatagridHelperBundle\Datagrid\Helper
+  
+        
+services:        
+    # grid helper    
+    tfone_datagrid.datagrid_helper:
+        class: %tfone_datagrid.datagrid_helper.class%  
+
