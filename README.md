@@ -41,3 +41,4 @@ Examples
 - [Removing filters](https://github.com/24198/DatagridHelperBundle/blob/master/Resources/docs/filters.md)
 - [Removing sorters](https://github.com/24198/DatagridHelperBundle/blob/master/Resources/docs/sorters.md)
 - [Enabling/disabling filters](https://github.com/24198/DatagridHelperBundle/blob/master/Resources/docs/filter-enabling.md)
+- [Full code example on OroCRM Contact grid](https://github.com/24198/ContactBundle.git) 
