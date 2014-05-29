@@ -5,7 +5,7 @@ namespace Tfone\Bundle\DatagridHelperBundle\Datagrid;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 
 
-class Helper {
+class DatagridHelper {
     
     const DATAGRID_COLUMNS_NAME  = '[columns][%s]';
     
@@ -13,20 +13,23 @@ class Helper {
         
     const DATAGRID_SORTERS_NAME  = '[sorters][columns][%s]';
     
+    /** @var DatagridConfiguration $gridConfig */
+    protected $gridConfig;
+    
     /**
      * Remove single column from datagrid
      * 
      * @param DatagridConfiguration $config
      * @param string $fieldName
      */
-    public function removeColumn(DatagridConfiguration $config, $fieldName) {
-        if(!$fieldName || !$config) {
-            throw new \LogicException(sprintf('Cannot remove column, grid config or fieldname is not specified.'));
+    public function removeColumn($fieldName) {
+        if(!$fieldName) {
+            throw new \LogicException(sprintf('Cannot remove column fieldname is not specified.'));
         }
         
-        $config->offsetUnsetByPath(sprintf(self::DATAGRID_COLUMNS_NAME, $fieldName));
-        $config->offsetUnsetByPath(sprintf(self::DATAGRID_FILTERS_NAME, $fieldName));
-        $config->offsetUnsetByPath(sprintf(self::DATAGRID_SORTERS_NAME, $fieldName));
+        $this->getGridConfig()->offsetUnsetByPath(sprintf(self::DATAGRID_COLUMNS_NAME, $fieldName));
+        $this->getGridConfig()->offsetUnsetByPath(sprintf(self::DATAGRID_FILTERS_NAME, $fieldName));
+        $this->getGridConfig()->offsetUnsetByPath(sprintf(self::DATAGRID_SORTERS_NAME, $fieldName));
     }
     
     /**
@@ -35,13 +38,13 @@ class Helper {
      * @param DatagridConfiguration $config
      * @param array $fields
      */
-    public function removeColumns(DatagridConfiguration $config, $fields) {
+    public function removeColumns($fields) {
         if(!is_array($fields)) {
             throw new \LogicException(sprintf('Cannot remove colums, parameter 2 is not an array.'));
         }
         
         foreach($fields as $fieldName) {
-            $this->removeColumn($config, $fieldName);
+            $this->removeColumn($fieldName);
         }
     }
 
@@ -51,11 +54,11 @@ class Helper {
      * @param DatagridConfiguration $config
      * @param string $fieldName
      */    
-    public function removeFilter(DatagridConfiguration $config, $fieldName) {
-        if(!$fieldName || !$config) {
-            throw new \LogicException(sprintf('Cannot remove column, grid config or fieldname is not specified.'));
+    public function removeFilter($fieldName) {
+        if(!$fieldName) {
+            throw new \LogicException(sprintf('Cannot remove column, fieldname is not specified.'));
         }
-        $config->offsetUnsetByPath(sprintf(self::DATAGRID_FILTERS_NAME, $fieldName));
+        $this->getGridConfig()->offsetUnsetByPath(sprintf(self::DATAGRID_FILTERS_NAME, $fieldName));
     }
 
     /**
@@ -64,13 +67,13 @@ class Helper {
      * @param DatagridConfiguration $config
      * @param array $fields
      */    
-    public function removeFilters(DatagridConfiguration $config, $fields) {
+    public function removeFilters($fields) {
         if(!is_array($fields)) {
             throw new \LogicException(sprintf('Cannot remove colums, parameter 2 is not an array.'));
         }
         
         foreach($fields as $fieldName) {
-            $this->removeFilter($config, $fieldName);
+            $this->removeFilter($fieldName);
         }        
     }
 
@@ -80,11 +83,11 @@ class Helper {
      * @param DatagridConfiguration $config
      * @param string $fieldName
      */    
-    public function removeSorter(DatagridConfiguration $config, $fieldName) {
-        if(!$fieldName || !$config) {
-            throw new \LogicException(sprintf('Cannot remove column, grid config or fieldname is not specified.'));
+    public function removeSorter($fieldName) {
+        if(!$fieldName) {
+            throw new \LogicException(sprintf('Cannot remove column, fieldname is not specified.'));
         }
-        $config->offsetUnsetByPath(sprintf(self::DATAGRID_SORTERS_NAME, $fieldName));        
+        $this->getGridConfig()->offsetUnsetByPath(sprintf(self::DATAGRID_SORTERS_NAME, $fieldName));        
     }
 
     /**
@@ -93,13 +96,13 @@ class Helper {
      * @param DatagridConfiguration $config
      * @param array $fields
      */    
-    public function removeSorters(DatagridConfiguration $config, $fields) {
+    public function removeSorters($fields) {
         if(!is_array($fields)) {
             throw new \LogicException(sprintf('Cannot remove colums, parameter 2 is not an array.'));
         }
         
         foreach($fields as $fieldName) {
-            $this->removeSorter($config, $fieldName);
+            $this->removeSorter($fieldName);
         }        
     }
     
@@ -111,12 +114,12 @@ class Helper {
      * @param DatagridConfiguration $config
      * @param string $filterName, name of the filter (should be the same as the corresponding field)
      */
-    public function enableFilter(DatagridConfiguration $config, $filterName, $enabled = true) {
-        if(!$filterName || !$config) {
-            throw new \LogicException(sprintf('Cannot remove column, grid config or fieldname is not specified.'));
+    public function enableFilter($filterName, $enabled = true) {
+        if(!$filterName) {
+            throw new \LogicException(sprintf('Cannot remove column, fieldname is not specified.'));
         }
         $path = sprintf(self::DATAGRID_FILTERS_NAME, $filterName); 
-        $filterConfig = $config->offsetGetByPath($path);
+        $filterConfig = $this->getGridConfig()->offsetGetByPath($path);
 
         $filterConfig['enabled'] = $enabled;
         
@@ -127,7 +130,7 @@ class Helper {
             $filterConfig['enabled'] = $enabled;
         }
           
-        $config->offsetSetByPath($path, $filterConfig);  
+        $this->getGridConfig()->offsetSetByPath($path, $filterConfig);  
     }
     
     /**
@@ -140,13 +143,22 @@ class Helper {
      * $enable <value>, boolean either enable or disable (true|false) the field filter
      * @throws \LogicException if the second parameter isn't an array throw exception and let the user know.
      */
-    public function enableFilters(DatagridConfiguration $config, $filters) {
+    public function enableFilters($filters) {
         if(!is_array($filters)) {
             throw new \LogicException(sprintf('Cannot sort filters, parameter 2 is not an array.'));
         }
                 
         foreach($filters as $fieldName => $enabled) {
-            $this->enableFilter($config, $fieldName, $enabled);         
+            $this->enableFilter($fieldName, $enabled);         
         }       
-    }    
+    }
+    
+    
+    public function setGridConfig(DatagridConfiguration $config) {
+        $this->gridConfig = $config;
+    }
+    
+    public function getGridConfig() {
+        return $this->gridConfig;
+    }
 }
